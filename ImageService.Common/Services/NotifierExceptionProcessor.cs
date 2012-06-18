@@ -20,17 +20,17 @@ namespace ImageService.Common
             {
                 if (ex is EndpointNotFoundException)
                     Notifier.Error("Endpoint not found!");
-                if (ex is CommunicationObjectFaultedException || ex is System.ServiceModel.CommunicationException)
+                else if (ex is CommunicationObjectFaultedException)
                     Notifier.Error("Service host is unavailable now");
             
                 //---------------
-                if (ex is FaultException<FileNotFound>)
+                else if (ex is FaultException<FileNotFound>)
                     Notifier.Error("File " + (ex as FaultException<FileNotFound>).Detail.FileName + " not found on host");
-                if (ex is FaultException<FileAlreadyExists>)
+                else if (ex is FaultException<FileAlreadyExists>)
                     Notifier.Warning("File " + (ex as FaultException<FileAlreadyExists>).Detail.FileName + " already exists on host");
-                if (ex is FaultException<HostStorageException>)
+                else if (ex is FaultException<HostStorageException>)
                     Notifier.Message((ex as FaultException<HostStorageException>).Detail.Description);
-                if (ex is FaultException<InvalidFileName>)
+                else if (ex is FaultException<InvalidFileName>)
                     Notifier.Error("File name in request \"" + (ex as FaultException<InvalidFileName>).Detail.InvalidName + "\"is invalid");
 
             }

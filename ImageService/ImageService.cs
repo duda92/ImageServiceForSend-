@@ -53,7 +53,7 @@ namespace ImageServicing
             {
                 HostStorageException fault = new HostStorageException();
                 fault.Description = "Prodlems with images storage on host";
-                throw new FaultException<HostStorageException>(fault);
+                throw new FaultException<HostStorageException>(fault, new FaultReason (string.Empty));
             }
             return images_collection;
         }
@@ -64,13 +64,13 @@ namespace ImageServicing
             try
             {
                 if (string.IsNullOrEmpty(request_file_name))
-                    throw new FaultException<InvalidFileName>(new InvalidFileName { InvalidName = request_file_name });
+                    throw new FaultException<InvalidFileName>(new InvalidFileName { InvalidName = request_file_name }, new FaultReason (string.Empty));
 
                 IEnumerable<FileInfo> allImageFilesList = GetAllImageFiles();
                 FileInfo requestedImageFile = null;
                 requestedImageFile = allImageFilesList.SingleOrDefault(f => f.Name == request_file_name);
                 if (requestedImageFile == null)
-                    throw new FaultException<FileNotFound>(new FileNotFound { FileName = request_file_name });
+                    throw new FaultException<FileNotFound>(new FileNotFound { FileName = request_file_name }, new FaultReason(string.Empty));
 
                 ImageFileData imageFileData = new ImageFileData() { FileName = requestedImageFile.Name, LastDateModified = requestedImageFile.LastWriteTime };
                 byte[] imageBytes = File.ReadAllBytes(requestedImageFile.FullName);
@@ -86,7 +86,7 @@ namespace ImageServicing
             {
                 HostStorageException fault = new HostStorageException();
                 fault.Description = "Prodlems with images storage on host";
-                throw new FaultException<HostStorageException>(fault);
+                throw new FaultException<HostStorageException>(fault, new FaultReason(string.Empty));
             }
         }
 
@@ -105,8 +105,8 @@ namespace ImageServicing
                 string uploadFolder = ConfigurationManager.AppSettings["UploadFolder"];
                 string newImageFilePath = Path.Combine(uploadFolder, newImageFileName);
 
-                if (!File.Exists(newImageFilePath))
-                    throw new FaultException<FileAlreadyExists>(new FileAlreadyExists {FileName = newImageFileName});
+                if (File.Exists(newImageFilePath))
+                    throw new FaultException<FileAlreadyExists>(new FileAlreadyExists { FileName = newImageFileName }, new FaultReason(string.Empty));
 
                 using (Stream targetStream = new FileStream(newImageFilePath, FileMode.OpenOrCreate, FileAccess.Write))
                 {
@@ -165,7 +165,7 @@ namespace ImageServicing
 
         private void Log(string methodName)
         {
-            Console.WriteLine("{0} is calling by {1}", methodName, OperationContext.Current.SessionId);
+            Console.WriteLine("{0} is calling", methodName);
             Console.WriteLine();
         }
     }

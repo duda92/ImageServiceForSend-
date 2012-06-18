@@ -87,7 +87,7 @@ namespace WindowsFormsImageServiceClient
             string selectedRowFileName = string.Empty;
             if (ImagesInfoGrid.SelectedRows.Count != 0)
                 selectedRowFileName = ((ImageFileData)ImagesInfoGrid.SelectedRows[0].DataBoundItem).FileName;
-            IEnumerable<ImageFileData> imagesInfo = manager.GetAllImagesInfo(true);
+            IEnumerable<ImageFileData> imagesInfo = manager.GetAllImagesInfo(false);
             if (imagesInfo == null)
                 return;
             ImagesInfoGrid.Rows.Clear();

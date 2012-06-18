@@ -85,8 +85,6 @@ namespace ImageService.Common
             IEnumerable<ImageFileData> allImagesFileData = GetAllImagesInfo(false);
             if (allImagesFileData == null)
                 return;
-            if (allImagesFileData.SingleOrDefault(p => p.FileName == imageName) != null)
-                faultProcessor.ProcessMessage("Image with the same name already exists");
 
             ImageFileData data = new ImageFileData() { FileName = imageName, LastDateModified = DateTime.Now, ImageData = imageData };
             try

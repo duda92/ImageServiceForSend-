@@ -20,7 +20,8 @@
             {
                 channelFactory.Close();
                 manager.Dispose();
-                components.Dispose();
+                if (components != null)
+                    components.Dispose();
             }
             base.Dispose(disposing);
         }

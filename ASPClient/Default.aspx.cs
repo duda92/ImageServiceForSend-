@@ -15,7 +15,7 @@ public partial class _Default : System.Web.UI.Page
         ImagesFileData = (IEnumerable<ImageFileData>)Session["ImagesFileData"];
         Manager = (ImageServiceClientManager)Session["Manager"];
 
-        ImagesFileData = Manager.GetAllImagesInfo(true);
+        ImagesFileData = Manager.GetAllImagesInfo(false);
         if (ImagesFileData != null)
         {
             GridView1.DataSource = ImagesFileData;
@@ -46,7 +46,7 @@ public partial class _Default : System.Web.UI.Page
             return;
         }
         ImageServiceClientManager Manager = new ImageServiceClientManager(channel, Notyfier, null);
-        IEnumerable<ImageFileData> ImagesFileData = Manager.GetAllImagesInfo(true);
+        IEnumerable<ImageFileData> ImagesFileData = Manager.GetAllImagesInfo(false);
         Session["Manager"] = Manager;
         Session["ImagesFileData"] = ImagesFileData;
     }
